@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>prestamo md</title>
+    <!-- Tailwind CSS para los estilos móviles y modernos -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- jsPDF para generar el PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- jsPDF AutoTable para la tabla del cuadro de amortización -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <!-- Configuración de colores de Tailwind -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            900: '#14532d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Estilos base para mejorar la apariencia en móviles */
+        body {
+            -webkit-tap-highlight-color: transparent;
+        }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+</head>
+<body class="text-slate-800 dark:text-slate-200 antialiased min-h-screen pb-10 bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
+
+    <main class="w-full max-w-md mx-auto p-4 sm:p-6 mt-2 sm:mt-8">
+        
+        <!-- Tarjeta Principal -->
+        <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl overflow-hidden border border-slate-100 dark:border-slate-700 transition-colors">
+            <!-- Cabecera -->
+            <div class="bg-brand-600 p-6 text-white text-center relative">
+                <!-- Botón Modo Claro/Oscuro -->
+                <button onclick="toggleTheme()" class="absolute top-4 right-4 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all active:scale-95" aria-label="Cambiar tema">
+                    <!-- Icono Luna (Modo Claro) -->
+                    <svg id="theme-icon-dark" class="w-5 h-5 block dark:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <!-- Icono Sol (Modo Oscuro) -->
+                    <svg id="theme-icon-light" class="w-5 h-5 hidden dark:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                </button>
+
+                <h1 class="text-2xl font-bold tracking-tight mt-1">Préstamo MD</h1>
+                <p class="text-brand-100 text-sm mt-1 opacity-90">Calculadora de amortización</p>
+                <div class="mt-4 inline-block bg-brand-700/50 px-3 py-1 rounded-full text-xs font-medium border border-brand-500/30">
+                    TIN: 3,25% | TAE: 3,30%
+                </div>
+            </div>
+
+            <div class="p-6 space-y-6">
+                <!-- Formulario -->
+                <div class="space-y-4">
+                    <div>
+                        <label for="capital" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Cantidad del préstamo (€)</label>
+                        <div class="relative">
+                            <input type="number" id="capital" value="8000" class="w-full pl-4 pr-10 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all text-lg font-medium outline-none dark:text-white" placeholder="Ej: 8000">
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-medium">€</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="meses" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Plazo (Meses)</label>
+                        <div class="relative">
+                            <input type="number" id="meses" value="48" class="w-full pl-4 pr-16 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all text-lg font-medium outline-none dark:text-white" placeholder="Ej: 48">
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-medium">meses</span>
+                        </div>
+                    </div>
+
+                    <button onclick="calcularPrestamo()" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-900 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-brand-500/30 transition-all transform active:scale-[0.98]">
+                        Calcular
+                    </button>
+                </div>
+
+                <!-- Resultados (Ocultos por defecto) -->
+                <div id="resultados" class="hidden mt-8 pt-6 border-t border-slate-100 dark:border-slate-700 space-y-4 transition-colors">
+                    <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 text-center mb-4">Resumen del Préstamo</h2>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-600 text-center transition-colors">
+                            <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider mb-1">Total Intereses</p>
+                            <p id="res-intereses" class="text-xl font-bold text-rose-500 dark:text-rose-400">0,00 €</p>
+                        </div>
+                        <div class="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-600 text-center transition-colors">
+                            <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider mb-1">Total Pagado</p>
+                            <p id="res-total" class="text-xl font-bold text-brand-600 dark:text-brand-400">0,00 €</p>
+                        </div>
+                    </div>
+
+                    <button onclick="descargarPDF()" class="w-full mt-4 bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 dark:hover:bg-slate-600 active:bg-black text-white font-bold py-3.5 px-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 transform active:scale-[0.98]">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Descargar Cuadro (PDF)
+                    </button>
+
+                    <!-- Botón de Info -->
+                    <button onclick="toggleInfo()" class="w-full mt-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold py-3 px-4 rounded-xl transition-all flex items-center justify-center gap-2 transform active:scale-[0.98] border border-slate-200 dark:border-slate-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                        Info: Cálculos TIN y TAE
+                    </button>
+
+                    <!-- Panel Info -->
+                    <div id="info-panel" class="hidden mt-4 bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-inner text-sm space-y-3 transition-colors">
+                        <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base border-b border-slate-100 dark:border-slate-800 pb-2 mb-3">Fórmulas Aplicadas</h3>
+                        <div class="space-y-2 text-slate-600 dark:text-slate-400">
+                            <p><span class="font-semibold text-slate-700 dark:text-slate-300">Interés Mensual Fijo:</span> 0,0027075</p>
+                            <p class="pt-2"><span class="font-semibold text-slate-700 dark:text-slate-300">TIN (Tipo de Interés Nominal):</span><br>
+                            0,0027075 x 12 = 0,03249  &rarr;  <strong class="text-brand-600 dark:text-brand-400">3,25%</strong></p>
+                            <p class="pt-2"><span class="font-semibold text-slate-700 dark:text-slate-300">TAE (Tasa Anual Equivalente):</span><br>
+                            (1 + 0,0027075)^12 - 1 = 0,03298  &rarr;  <strong class="text-brand-600 dark:text-brand-400">3,30%</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Constantes del préstamo
+        const TASA_MENSUAL = 0.0027075;
+        let cuadroAmortizacion = [];
+        let totales = { intereses: 0, pagado: 0 };
+
+        // Formateador de moneda formato España
+        const formatter = new Intl.NumberFormat('es-ES', {
+            style: 'currency',
+            currency: 'EUR',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
+        // Formateador de números simple
+        const numFormatter = new Intl.NumberFormat('es-ES', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
+        function calcularPrestamo() {
+            // Obtener valores
+            const capital = parseFloat(document.getElementById('capital').value);
+            const meses = parseInt(document.getElementById('meses').value);
+
+            // Validaciones básicas
+            if (isNaN(capital) || capital <= 0 || isNaN(meses) || meses <= 0) {
+                // Pequeño feedback visual sin usar alert
+                const btn = document.querySelector('button');
+                const textOriginal = btn.innerText;
+                btn.innerText = "Datos inválidos";
+                btn.classList.replace('bg-brand-600', 'bg-rose-500');
+                setTimeout(() => {
+                    btn.innerText = textOriginal;
+                    btn.classList.replace('bg-rose-500', 'bg-brand-600');
+                }, 2000);
+                return;
+            }
+
+            // Reiniciar variables
+            cuadroAmortizacion = [];
+            let capitalPendiente = capital;
+            const cuotaCapitalMensual = capital / meses;
+            let totalInteresesAcumulado = 0;
+
+            // Bucle de cálculo mes a mes
+            for (let mes = 1; mes <= meses; mes++) {
+                // El interés se calcula sobre el capital pendiente del mes anterior
+                let interesMes = capitalPendiente * TASA_MENSUAL;
+                let cuotaTotalMes = cuotaCapitalMensual + interesMes;
+
+                // Guardar en el cuadro
+                cuadroAmortizacion.push({
+                    mes: mes,
+                    cuotaCapital: cuotaCapitalMensual,
+                    interes: interesMes,
+                    cuotaTotal: cuotaTotalMes,
+                    capitalPendienteAtras: capitalPendiente - cuotaCapitalMensual > 0 ? capitalPendiente - cuotaCapitalMensual : 0
+                });
+
+                // Acumular y restar
+                totalInteresesAcumulado += interesMes;
+                capitalPendiente -= cuotaCapitalMensual;
+            }
+
+            // Guardar totales
+            totales.intereses = totalInteresesAcumulado;
+            totales.pagado = capital + totalInteresesAcumulado;
+
+            // Actualizar Interfaz
+            document.getElementById('res-intereses').innerText = formatter.format(totales.intereses);
+            document.getElementById('res-total').innerText = formatter.format(totales.pagado);
+
+            // Mostrar resultados
+            document.getElementById('resultados').classList.remove('hidden');
+            
+            // Hacer scroll suave hacia los resultados en móviles
+            setTimeout(() => {
+                window.scrollTo({
+                    top: document.body.scrollHeight,
+                    behavior: 'smooth'
+                });
+            }, 100);
+        }
+
+        function descargarPDF() {
+            if (cuadroAmortizacion.length === 0) return;
+
+            // Inicializar jsPDF
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            const capitalInicial = parseFloat(document.getElementById('capital').value);
+            const meses = parseInt(document.getElementById('meses').value);
+
+            // Colores corporativos (coinciden con la web)
+            const colorPrimario = [22, 163, 74]; // brand-600
+            
+            // Título
+            doc.setFontSize(22);
+            doc.setTextColor(15, 23, 42); // slate-900
+            doc.text('Cuadro de Amortización', 14, 20);
+            
+            doc.setFontSize(11);
+            doc.setTextColor(100, 116, 139); // slate-500
+            doc.text('Préstamo MD', 14, 28);
+
+            // Resumen arriba
+            doc.setFontSize(12);
+            doc.setTextColor(15, 23, 42);
+            doc.text(`Capital Prestado: ${formatter.format(capitalInicial)}`, 14, 40);
+            doc.text(`Plazo: ${meses} meses`, 14, 46);
+            doc.text(`Total Intereses: ${formatter.format(totales.intereses)}`, 110, 40);
+            doc.text(`Total a Pagar: ${formatter.format(totales.pagado)}`, 110, 46);
+
+            // Preparar datos para AutoTable
+            const bodyData = cuadroAmortizacion.map(fila => [
+                fila.mes.toString(),
+                numFormatter.format(fila.cuotaCapital) + ' €',
+                numFormatter.format(fila.interes) + ' €',
+                numFormatter.format(fila.cuotaTotal) + ' €',
+                numFormatter.format(fila.capitalPendienteAtras) + ' €'
+            ]);
+
+            // Generar tabla
+            doc.autoTable({
+                startY: 55,
+                head: [['Mes', 'Cuota Capital', 'Interés', 'Cuota Total', 'Capital Pendiente']],
+                body: bodyData,
+                theme: 'striped',
+                headStyles: { fillColor: colorPrimario, textColor: 255 },
+                styles: { fontSize: 9, cellPadding: 3, halign: 'right' },
+                columnStyles: { 0: { halign: 'center', fontStyle: 'bold' } },
+                alternateRowStyles: { fillColor: [248, 250, 252] }, // slate-50
+                margin: { top: 15, right: 14, bottom: 40, left: 14 } // Margen inferior grande para los cálculos
+            });
+
+            // Añadir bloque de fórmulas TIN y TAE al final del documento
+            let finalY = doc.lastAutoTable.finalY + 15;
+            
+            // Si no hay espacio en esta página, crear una nueva
+            if (finalY > 250) {
+                doc.addPage();
+                finalY = 20;
+            }
+
+            // Caja de Fórmulas y Explicación
+            doc.setFillColor(241, 245, 249); // slate-100
+            doc.roundedRect(14, finalY, 182, 50, 3, 3, 'F');
+            
+            doc.setFontSize(11);
+            doc.setFont("helvetica", "bold");
+            doc.setTextColor(15, 23, 42);
+            doc.text('Cálculos del Tipo de Interés Aplicado', 20, finalY + 8);
+
+            doc.setFontSize(10);
+            doc.setFont("helvetica", "normal");
+            doc.setTextColor(71, 85, 105); // slate-600
+            
+            // Explicación de dónde sale el TIN y el TAE según las fórmulas matemáticas
+            doc.text('• Interés Mensual Fijo: 0,0027075', 20, finalY + 16);
+            
+            doc.setFont("helvetica", "bold");
+            doc.text('• TIN (Tipo de Interés Nominal Anual):', 20, finalY + 24);
+            doc.setFont("helvetica", "normal");
+            doc.text('0,0027075 x 12 = 0,03249  ->  3,25%', 95, finalY + 24);
+            
+            doc.setFont("helvetica", "bold");
+            doc.text('• TAE (Tasa Anual Equivalente):', 20, finalY + 32);
+            doc.setFont("helvetica", "normal");
+            doc.text('(1 + 0,0027075)^12 - 1 = 0,03298  ->  3,30%', 95, finalY + 32);
+
+            doc.setFontSize(8);
+            doc.setTextColor(148, 163, 184); // slate-400
+            doc.text('Documento generado por la Calculadora de Préstamo MD.', 14, doc.internal.pageSize.getHeight() - 10);
+
+            // Descargar el archivo
+            doc.save(`Cuadro_Amortizacion_${capitalInicial}€_${meses}meses.pdf`);
+        }
+
+        // Lógica del modo Claro/Oscuro
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+        // Lógica para mostrar/ocultar el panel de información
+        function toggleInfo() {
+            const panel = document.getElementById('info-panel');
+            panel.classList.toggle('hidden');
+            
+            // Scroll suave hacia la info
+            if (!panel.classList.contains('hidden')) {
+                setTimeout(() => {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
+            }
+        }
+    </script>
+</body>
+</html>

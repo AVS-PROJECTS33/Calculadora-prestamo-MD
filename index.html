@@ -1,350 +1,536 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>prestamo md</title>
-    <!-- Tailwind CSS para los estilos móviles y modernos -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- jsPDF para generar el PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <!-- jsPDF AutoTable para la tabla del cuadro de amortización -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
-    <!-- Configuración de colores de Tailwind -->
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            50: '#f0fdf4',
-                            100: '#dcfce7',
-                            500: '#22c55e',
-                            600: '#16a34a',
-                            700: '#15803d',
-                            900: '#14532d',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        /* Estilos base para mejorar la apariencia en móviles */
-        body {
-            -webkit-tap-highlight-color: transparent;
-        }
-        input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-    </style>
-</head>
+<html lang="es"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>prestamo md</title>
+    <!-- Tailwind CSS para los estilos móviles y modernos -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- jsPDF para generar el PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- jsPDF AutoTable para la tabla del cuadro de amortización -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <!-- Configuración de colores de Tailwind -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            900: '#14532d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Estilos base para mejorar la apariencia en móviles */
+        body {
+            -webkit-tap-highlight-color: transparent;
+        }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.absolute{position:absolute}.relative{position:relative}.left-0{left:0px}.left-4{left:1rem}.right-0{right:0px}.right-4{right:1rem}.top-0{top:0px}.top-1\/2{top:50%}.top-4{top:1rem}.mx-auto{margin-left:auto;margin-right:auto}.mb-1{margin-bottom:0.25rem}.mb-2{margin-bottom:0.5rem}.mb-3{margin-bottom:0.75rem}.mb-4{margin-bottom:1rem}.mt-1{margin-top:0.25rem}.mt-2{margin-top:0.5rem}.mt-3{margin-top:0.75rem}.mt-4{margin-top:1rem}.mt-8{margin-top:2rem}.block{display:block}.inline-block{display:inline-block}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-4{height:1rem}.h-5{height:1.25rem}.h-full{height:100%}.min-h-screen{min-height:100vh}.w-1{width:0.25rem}.w-2{width:0.5rem}.w-4{width:1rem}.w-5{width:1.25rem}.w-full{width:100%}.max-w-md{max-width:28rem}.-translate-y-1\/2{--tw-translate-y:-50%;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.transform{transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-pointer{cursor:pointer}.grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.items-end{align-items:flex-end}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:0.25rem}.gap-2{gap:0.5rem}.gap-3{gap:0.75rem}.gap-4{gap:1rem}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-3 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.75rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.space-y-6 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1.5rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.rounded-2xl{border-radius:1rem}.rounded-3xl{border-radius:1.5rem}.rounded-full{border-radius:9999px}.rounded-xl{border-radius:0.75rem}.border{border-width:1px}.border-2{border-width:2px}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-amber-200{--tw-border-opacity:1;border-color:rgb(253 230 138 / var(--tw-border-opacity, 1))}.border-brand-500\/30{border-color:rgb(34 197 94 / 0.3)}.border-slate-100{--tw-border-opacity:1;border-color:rgb(241 245 249 / var(--tw-border-opacity, 1))}.border-slate-200{--tw-border-opacity:1;border-color:rgb(226 232 240 / var(--tw-border-opacity, 1))}.bg-amber-100{--tw-bg-opacity:1;background-color:rgb(254 243 199 / var(--tw-bg-opacity, 1))}.bg-amber-500{--tw-bg-opacity:1;background-color:rgb(245 158 11 / var(--tw-bg-opacity, 1))}.bg-brand-50{--tw-bg-opacity:1;background-color:rgb(240 253 244 / var(--tw-bg-opacity, 1))}.bg-brand-500{--tw-bg-opacity:1;background-color:rgb(34 197 94 / var(--tw-bg-opacity, 1))}.bg-brand-600{--tw-bg-opacity:1;background-color:rgb(22 163 74 / var(--tw-bg-opacity, 1))}.bg-brand-700\/50{background-color:rgb(21 128 61 / 0.5)}.bg-slate-100{--tw-bg-opacity:1;background-color:rgb(241 245 249 / var(--tw-bg-opacity, 1))}.bg-slate-50{--tw-bg-opacity:1;background-color:rgb(248 250 252 / var(--tw-bg-opacity, 1))}.bg-slate-800{--tw-bg-opacity:1;background-color:rgb(30 41 59 / var(--tw-bg-opacity, 1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-white\/10{background-color:rgb(255 255 255 / 0.1)}.p-2{padding:0.5rem}.p-4{padding:1rem}.p-5{padding:1.25rem}.p-6{padding:1.5rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.py-3\.5{padding-top:0.875rem;padding-bottom:0.875rem}.pb-10{padding-bottom:2.5rem}.pb-2{padding-bottom:0.5rem}.pb-4{padding-bottom:1rem}.pl-4{padding-left:1rem}.pr-10{padding-right:2.5rem}.pr-16{padding-right:4rem}.pt-2{padding-top:0.5rem}.pt-3{padding-top:0.75rem}.pt-6{padding-top:1.5rem}.text-center{text-align:center}.text-2xl{font-size:1.5rem;line-height:2rem}.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-semibold{font-weight:600}.uppercase{text-transform:uppercase}.leading-relaxed{line-height:1.625}.tracking-tight{letter-spacing:-0.025em}.tracking-wider{letter-spacing:0.05em}.text-amber-600{--tw-text-opacity:1;color:rgb(217 119 6 / var(--tw-text-opacity, 1))}.text-brand-100{--tw-text-opacity:1;color:rgb(220 252 231 / var(--tw-text-opacity, 1))}.text-brand-500{--tw-text-opacity:1;color:rgb(34 197 94 / var(--tw-text-opacity, 1))}.text-brand-600{--tw-text-opacity:1;color:rgb(22 163 74 / var(--tw-text-opacity, 1))}.text-brand-700{--tw-text-opacity:1;color:rgb(21 128 61 / var(--tw-text-opacity, 1))}.text-rose-500{--tw-text-opacity:1;color:rgb(244 63 94 / var(--tw-text-opacity, 1))}.text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184 / var(--tw-text-opacity, 1))}.text-slate-500{--tw-text-opacity:1;color:rgb(100 116 139 / var(--tw-text-opacity, 1))}.text-slate-600{--tw-text-opacity:1;color:rgb(71 85 105 / var(--tw-text-opacity, 1))}.text-slate-700{--tw-text-opacity:1;color:rgb(51 65 85 / var(--tw-text-opacity, 1))}.text-slate-800{--tw-text-opacity:1;color:rgb(30 41 59 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.opacity-0{opacity:0}.opacity-90{opacity:0.9}.shadow-inner{--tw-shadow:inset 0 2px 4px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:inset 0 2px 4px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-sm{--tw-shadow:0 1px 2px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:0 1px 2px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-brand-500\/30{--tw-shadow-color:rgb(34 197 94 / 0.3);--tw-shadow:var(--tw-shadow-colored)}.outline-none{outline:2px solid transparent;outline-offset:2px}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.duration-300{transition-duration:300ms}.hover\:border-brand-500:hover{--tw-border-opacity:1;border-color:rgb(34 197 94 / var(--tw-border-opacity, 1))}.hover\:bg-brand-700:hover{--tw-bg-opacity:1;background-color:rgb(21 128 61 / var(--tw-bg-opacity, 1))}.hover\:bg-slate-200:hover{--tw-bg-opacity:1;background-color:rgb(226 232 240 / var(--tw-bg-opacity, 1))}.hover\:bg-slate-50:hover{--tw-bg-opacity:1;background-color:rgb(248 250 252 / var(--tw-bg-opacity, 1))}.hover\:bg-slate-900:hover{--tw-bg-opacity:1;background-color:rgb(15 23 42 / var(--tw-bg-opacity, 1))}.hover\:bg-white\/20:hover{background-color:rgb(255 255 255 / 0.2)}.hover\:shadow-md:hover{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.focus\:border-brand-500:focus{--tw-border-opacity:1;border-color:rgb(34 197 94 / var(--tw-border-opacity, 1))}.focus\:ring-2:focus{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)}.focus\:ring-brand-500:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(34 197 94 / var(--tw-ring-opacity, 1))}.active\:scale-95:active{--tw-scale-x:.95;--tw-scale-y:.95;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.active\:scale-\[0\.98\]:active{--tw-scale-x:0.98;--tw-scale-y:0.98;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.active\:bg-black:active{--tw-bg-opacity:1;background-color:rgb(0 0 0 / var(--tw-bg-opacity, 1))}.active\:bg-brand-900:active{--tw-bg-opacity:1;background-color:rgb(20 83 45 / var(--tw-bg-opacity, 1))}.group:hover .group-hover\:opacity-100{opacity:1}.dark\:block:is(.dark *){display:block}.dark\:hidden:is(.dark *){display:none}.dark\:border-amber-900\/50:is(.dark *){border-color:rgb(120 53 15 / 0.5)}.dark\:border-slate-600:is(.dark *){--tw-border-opacity:1;border-color:rgb(71 85 105 / var(--tw-border-opacity, 1))}.dark\:border-slate-700:is(.dark *){--tw-border-opacity:1;border-color:rgb(51 65 85 / var(--tw-border-opacity, 1))}.dark\:border-slate-800:is(.dark *){--tw-border-opacity:1;border-color:rgb(30 41 59 / var(--tw-border-opacity, 1))}.dark\:bg-amber-900\/30:is(.dark *){background-color:rgb(120 53 15 / 0.3)}.dark\:bg-brand-900\/30:is(.dark *){background-color:rgb(20 83 45 / 0.3)}.dark\:bg-slate-700:is(.dark *){--tw-bg-opacity:1;background-color:rgb(51 65 85 / var(--tw-bg-opacity, 1))}.dark\:bg-slate-700\/50:is(.dark *){background-color:rgb(51 65 85 / 0.5)}.dark\:bg-slate-800:is(.dark *){--tw-bg-opacity:1;background-color:rgb(30 41 59 / var(--tw-bg-opacity, 1))}.dark\:bg-slate-900:is(.dark *){--tw-bg-opacity:1;background-color:rgb(15 23 42 / var(--tw-bg-opacity, 1))}.dark\:text-amber-400:is(.dark *){--tw-text-opacity:1;color:rgb(251 191 36 / var(--tw-text-opacity, 1))}.dark\:text-rose-400:is(.dark *){--tw-text-opacity:1;color:rgb(251 113 133 / var(--tw-text-opacity, 1))}.dark\:text-slate-100:is(.dark *){--tw-text-opacity:1;color:rgb(241 245 249 / var(--tw-text-opacity, 1))}.dark\:text-slate-200:is(.dark *){--tw-text-opacity:1;color:rgb(226 232 240 / var(--tw-text-opacity, 1))}.dark\:text-slate-300:is(.dark *){--tw-text-opacity:1;color:rgb(203 213 225 / var(--tw-text-opacity, 1))}.dark\:text-slate-400:is(.dark *){--tw-text-opacity:1;color:rgb(148 163 184 / var(--tw-text-opacity, 1))}.dark\:text-white:is(.dark *){--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.dark\:hover\:border-brand-500:hover:is(.dark *){--tw-border-opacity:1;border-color:rgb(34 197 94 / var(--tw-border-opacity, 1))}.dark\:hover\:bg-slate-600:hover:is(.dark *){--tw-bg-opacity:1;background-color:rgb(71 85 105 / var(--tw-bg-opacity, 1))}.dark\:hover\:bg-slate-700:hover:is(.dark *){--tw-bg-opacity:1;background-color:rgb(51 65 85 / var(--tw-bg-opacity, 1))}.dark\:hover\:bg-slate-700\/50:hover:is(.dark *){background-color:rgb(51 65 85 / 0.5)}@media (min-width: 640px){.sm\:mt-8{margin-top:2rem}.sm\:p-6{padding:1.5rem}}</style></head>
 <body class="text-slate-800 dark:text-slate-200 antialiased min-h-screen pb-10 bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
-
-    <main class="w-full max-w-md mx-auto p-4 sm:p-6 mt-2 sm:mt-8">
-        
-        <!-- Tarjeta Principal -->
-        <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl overflow-hidden border border-slate-100 dark:border-slate-700 transition-colors">
-            <!-- Cabecera -->
-            <div class="bg-brand-600 p-6 text-white text-center relative">
-                <!-- Botón Modo Claro/Oscuro -->
-                <button onclick="toggleTheme()" class="absolute top-4 right-4 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all active:scale-95" aria-label="Cambiar tema">
-                    <!-- Icono Luna (Modo Claro) -->
-                    <svg id="theme-icon-dark" class="w-5 h-5 block dark:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                    <!-- Icono Sol (Modo Oscuro) -->
-                    <svg id="theme-icon-light" class="w-5 h-5 hidden dark:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-                </button>
-
-                <h1 class="text-2xl font-bold tracking-tight mt-1">Préstamo MD</h1>
-                <p class="text-brand-100 text-sm mt-1 opacity-90">Calculadora de amortización</p>
-                <div class="mt-4 inline-block bg-brand-700/50 px-3 py-1 rounded-full text-xs font-medium border border-brand-500/30">
-                    Año 2026 | TIN: 3,25% | TAE: 3,30%
-                </div>
-            </div>
-
-            <div class="p-6 space-y-6">
-                <!-- Formulario -->
-                <div class="space-y-4">
-                    <div>
-                        <label for="capital" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Cantidad del préstamo (€)</label>
-                        <div class="relative">
-                            <input type="number" id="capital" value="8000" class="w-full pl-4 pr-10 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all text-lg font-medium outline-none dark:text-white" placeholder="Ej: 8000">
-                            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-medium">€</span>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label for="meses" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Plazo (Meses)</label>
-                        <div class="relative">
-                            <input type="number" id="meses" value="48" class="w-full pl-4 pr-16 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all text-lg font-medium outline-none dark:text-white" placeholder="Ej: 48">
-                            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-medium">meses</span>
-                        </div>
-                    </div>
-
-                    <button onclick="calcularPrestamo()" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-900 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-brand-500/30 transition-all transform active:scale-[0.98]">
-                        Calcular
-                    </button>
-                </div>
-
-                <!-- Resultados (Ocultos por defecto) -->
-                <div id="resultados" class="hidden mt-8 pt-6 border-t border-slate-100 dark:border-slate-700 space-y-4 transition-colors">
-                    <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 text-center mb-4">Resumen del Préstamo</h2>
-                    
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-600 text-center transition-colors">
-                            <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider mb-1">Total Intereses</p>
-                            <p id="res-intereses" class="text-xl font-bold text-rose-500 dark:text-rose-400">0,00 €</p>
-                        </div>
-                        <div class="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-600 text-center transition-colors">
-                            <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider mb-1">Total Pagado</p>
-                            <p id="res-total" class="text-xl font-bold text-brand-600 dark:text-brand-400">0,00 €</p>
-                        </div>
-                    </div>
-
-                    <button onclick="descargarPDF()" class="w-full mt-4 bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 dark:hover:bg-slate-600 active:bg-black text-white font-bold py-3.5 px-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 transform active:scale-[0.98]">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                        Descargar Cuadro (PDF)
-                    </button>
-
-                    <!-- Botón de Info -->
-                    <button onclick="toggleInfo()" class="w-full mt-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold py-3 px-4 rounded-xl transition-all flex items-center justify-center gap-2 transform active:scale-[0.98] border border-slate-200 dark:border-slate-700">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-                        Info: Interés Legal y Cálculos
-                    </button>
-
-                    <!-- Panel Info -->
-                    <div id="info-panel" class="hidden mt-4 bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-inner text-sm space-y-3 transition-colors">
-                        
-                        <!-- Nuevo bloque sobre el Interés Legal -->
-                        <div class="mb-4 pb-4 border-b border-slate-100 dark:border-slate-800">
-                            <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base mb-2 flex items-center gap-2">
-                                <svg class="w-4 h-4 text-brand-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                                Interés Legal del Dinero (2026)
-                            </h3>
-                            <p class="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
-                                El TIN aplicado del <strong class="text-slate-700 dark:text-slate-300">3,25%</strong> está ligado al <strong>Interés Legal del Dinero</strong> fijado para el año 2026. Este porcentaje es fijo durante este año, pero ten en cuenta que podría variar en el futuro si se actualiza mediante los Presupuestos Generales del Estado.
-                            </p>
-                        </div>
-
-                        <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base border-b border-slate-100 dark:border-slate-800 pb-2 mb-3">Fórmulas Aplicadas</h3>
-                        <div class="space-y-2 text-slate-600 dark:text-slate-400">
-                            <p><span class="font-semibold text-slate-700 dark:text-slate-300">Interés Mensual Fijo:</span> 0,0027075</p>
-                            <p class="pt-2"><span class="font-semibold text-slate-700 dark:text-slate-300">TIN (Tipo de Interés Nominal):</span><br>
-                            0,0027075 x 12 = 0,03249  &rarr;  <strong class="text-brand-600 dark:text-brand-400">3,25%</strong></p>
-                            <p class="pt-2"><span class="font-semibold text-slate-700 dark:text-slate-300">TAE (Tasa Anual Equivalente):</span><br>
-                            (1 + 0,0027075)^12 - 1 = 0,03298  &rarr;  <strong class="text-brand-600 dark:text-brand-400">3,30%</strong></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <script>
-        // Constantes del préstamo
-        const TASA_MENSUAL = 0.0027075;
-        let cuadroAmortizacion = [];
-        let totales = { intereses: 0, pagado: 0 };
-
-        // Formateador de moneda formato España
-        const formatter = new Intl.NumberFormat('es-ES', {
-            style: 'currency',
-            currency: 'EUR',
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        });
-
-        // Formateador de números simple
-        const numFormatter = new Intl.NumberFormat('es-ES', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        });
-
-        function calcularPrestamo() {
-            // Obtener valores
-            const capital = parseFloat(document.getElementById('capital').value);
-            const meses = parseInt(document.getElementById('meses').value);
-
-            // Validaciones básicas
-            if (isNaN(capital) || capital <= 0 || isNaN(meses) || meses <= 0) {
-                // Pequeño feedback visual sin usar alert
-                const btn = document.querySelector('button');
-                const textOriginal = btn.innerText;
-                btn.innerText = "Datos inválidos";
-                btn.classList.replace('bg-brand-600', 'bg-rose-500');
-                setTimeout(() => {
-                    btn.innerText = textOriginal;
-                    btn.classList.replace('bg-rose-500', 'bg-brand-600');
-                }, 2000);
-                return;
-            }
-
-            // Reiniciar variables
-            cuadroAmortizacion = [];
-            let capitalPendiente = capital;
-            const cuotaCapitalMensual = capital / meses;
-            let totalInteresesAcumulado = 0;
-
-            // Bucle de cálculo mes a mes
-            for (let mes = 1; mes <= meses; mes++) {
-                // El interés se calcula sobre el capital pendiente del mes anterior
-                let interesMes = capitalPendiente * TASA_MENSUAL;
-                let cuotaTotalMes = cuotaCapitalMensual + interesMes;
-
-                // Guardar en el cuadro
-                cuadroAmortizacion.push({
-                    mes: mes,
-                    cuotaCapital: cuotaCapitalMensual,
-                    interes: interesMes,
-                    cuotaTotal: cuotaTotalMes,
-                    capitalPendienteAtras: capitalPendiente - cuotaCapitalMensual > 0 ? capitalPendiente - cuotaCapitalMensual : 0
-                });
-
-                // Acumular y restar
-                totalInteresesAcumulado += interesMes;
-                capitalPendiente -= cuotaCapitalMensual;
-            }
-
-            // Guardar totales
-            totales.intereses = totalInteresesAcumulado;
-            totales.pagado = capital + totalInteresesAcumulado;
-
-            // Actualizar Interfaz
-            document.getElementById('res-intereses').innerText = formatter.format(totales.intereses);
-            document.getElementById('res-total').innerText = formatter.format(totales.pagado);
-
-            // Mostrar resultados
-            document.getElementById('resultados').classList.remove('hidden');
-            
-            // Hacer scroll suave hacia los resultados en móviles
-            setTimeout(() => {
-                window.scrollTo({
-                    top: document.body.scrollHeight,
-                    behavior: 'smooth'
-                });
-            }, 100);
-        }
-
-        function descargarPDF() {
-            if (cuadroAmortizacion.length === 0) return;
-
-            // Inicializar jsPDF
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-
-            const capitalInicial = parseFloat(document.getElementById('capital').value);
-            const meses = parseInt(document.getElementById('meses').value);
-
-            // Colores corporativos (coinciden con la web)
-            const colorPrimario = [22, 163, 74]; // brand-600
-            
-            // Título
-            doc.setFontSize(22);
-            doc.setTextColor(15, 23, 42); // slate-900
-            doc.text('Cuadro de Amortización', 14, 20);
-            
-            doc.setFontSize(11);
-            doc.setTextColor(100, 116, 139); // slate-500
-            doc.text('Préstamo MD', 14, 28);
-
-            // Resumen arriba
-            doc.setFontSize(12);
-            doc.setTextColor(15, 23, 42);
-            doc.text(`Capital Prestado: ${formatter.format(capitalInicial)}`, 14, 40);
-            doc.text(`Plazo: ${meses} meses`, 14, 46);
-            doc.text(`Total Intereses: ${formatter.format(totales.intereses)}`, 110, 40);
-            doc.text(`Total a Pagar: ${formatter.format(totales.pagado)}`, 110, 46);
-
-            // Preparar datos para AutoTable
-            const bodyData = cuadroAmortizacion.map(fila => [
-                fila.mes.toString(),
-                // Usamos Math.floor(numero * 100) / 100 para forzar visualmente el corte a 2 decimales sin redondear al alza
-                numFormatter.format(Math.floor(fila.cuotaCapital * 100) / 100) + ' €',
-                numFormatter.format(fila.interes) + ' €',
-                numFormatter.format(fila.cuotaTotal) + ' €',
-                numFormatter.format(fila.capitalPendienteAtras) + ' €'
-            ]);
-
-            // Generar tabla
-            doc.autoTable({
-                startY: 55,
-                head: [['Mes', 'Cuota Capital', 'Interés', 'Cuota Total', 'Capital Pendiente']],
-                body: bodyData,
-                theme: 'striped',
-                headStyles: { fillColor: colorPrimario, textColor: 255 },
-                styles: { fontSize: 9, cellPadding: 3, halign: 'right' },
-                columnStyles: { 0: { halign: 'center', fontStyle: 'bold' } },
-                alternateRowStyles: { fillColor: [248, 250, 252] }, // slate-50
-                margin: { top: 15, right: 14, bottom: 40, left: 14 } // Margen inferior grande para los cálculos
-            });
-
-            // Añadir bloque de fórmulas TIN y TAE al final del documento
-            let finalY = doc.lastAutoTable.finalY + 15;
-            
-            // Si no hay espacio en esta página, crear una nueva
-            if (finalY > 240) {
-                doc.addPage();
-                finalY = 20;
-            }
-
-            // Caja de Fórmulas y Explicación
-            doc.setFillColor(241, 245, 249); // slate-100
-            doc.roundedRect(14, finalY, 182, 60, 3, 3, 'F');
-            
-            doc.setFontSize(11);
-            doc.setFont("helvetica", "bold");
-            doc.setTextColor(15, 23, 42);
-            doc.text('Interés Legal (Año 2026) y Cálculos', 20, finalY + 8);
-
-            doc.setFontSize(9);
-            doc.setFont("helvetica", "normal");
-            doc.setTextColor(71, 85, 105); // slate-600
-            doc.text('El TIN del 3,25% corresponde al Interés Legal del Dinero fijado para 2026. Este porcentaje es fijo', 20, finalY + 14);
-            doc.text('durante este año, pero podría variar en el futuro si se actualiza en los Presupuestos Generales.', 20, finalY + 19);
-
-            doc.setFontSize(10);
-            
-            // Explicación de dónde sale el TIN y el TAE según las fórmulas matemáticas
-            doc.text('• Interés Mensual Fijo: 0,0027075', 20, finalY + 28);
-            
-            doc.setFont("helvetica", "bold");
-            doc.text('• TIN (Tipo de Interés Nominal Anual):', 20, finalY + 36);
-            doc.setFont("helvetica", "normal");
-            doc.text('0,0027075 x 12 = 0,03249  ->  3,25%', 95, finalY + 36);
-            
-            doc.setFont("helvetica", "bold");
-            doc.text('• TAE (Tasa Anual Equivalente):', 20, finalY + 44);
-            doc.setFont("helvetica", "normal");
-            doc.text('(1 + 0,0027075)^12 - 1 = 0,03298  ->  3,30%', 95, finalY + 44);
-
-            doc.setFontSize(8);
-            doc.setTextColor(148, 163, 184); // slate-400
-            doc.text('Documento generado por la Calculadora de Préstamo MD.', 14, doc.internal.pageSize.getHeight() - 10);
-
-            // Descargar el archivo
-            doc.save(`Cuadro_Amortizacion_${capitalInicial}€_${meses}meses.pdf`);
-        }
-
-        // Lógica del modo Claro/Oscuro
-        function toggleTheme() {
-            document.documentElement.classList.toggle('dark');
-        }
-
-        // Lógica para mostrar/ocultar el panel de información
-        function toggleInfo() {
-            const panel = document.getElementById('info-panel');
-            panel.classList.toggle('hidden');
-            
-            // Scroll suave hacia la info
-            if (!panel.classList.contains('hidden')) {
-                setTimeout(() => {
-                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }, 100);
-            }
-        }
-    </script>
-</body>
-</html>
+ 
+    <main class="w-full max-w-md mx-auto p-4 sm:p-6 mt-2 sm:mt-8 relative">
+         
+        <!-- PASO 1: Selector de Antigüedad -->
+        <div id="step-1-selector" class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl overflow-hidden border border-slate-100 dark:border-slate-700 transition-colors">
+             
+            <div class="bg-brand-600 p-6 text-white text-center relative">
+                <!-- Botón Modo Claro/Oscuro -->
+                <button onclick="toggleTheme()" class="absolute top-4 right-4 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all active:scale-95" aria-label="Cambiar tema">
+                    <svg id="theme-icon-dark-1" class="w-5 h-5 block dark:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <svg id="theme-icon-light-1" class="w-5 h-5 hidden dark:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                </button>
+                <h1 class="text-2xl font-bold tracking-tight mt-1">Préstamo MD</h1>
+                <p class="text-brand-100 text-sm mt-1 opacity-90">Selecciona tu perfil para continuar</p>
+            </div>
+ 
+            <div class="p-6 space-y-4">
+                <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 text-center mb-4">Antigüedad en la empresa</h2>
+ 
+                <!-- Tarjeta 1: > 6 meses -->
+                <div onclick="seleccionarPerfil('Más de 6 meses', 2000, 18)" class="group p-5 border-2 border-slate-100 dark:border-slate-700 rounded-2xl cursor-pointer hover:border-brand-500 dark:hover:border-brand-500 hover:shadow-md transition-all active:scale-[0.98] bg-white dark:bg-slate-800 relative overflow-hidden">
+                    <div class="absolute right-0 top-0 h-full w-2 bg-brand-500 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="font-bold text-lg text-slate-800 dark:text-white">Más de 6 meses</h3>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Personal indefinido ordinario</p>
+                        </div>
+                        <div class="bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 p-2 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-slate-100 dark:border-slate-700 flex justify-between text-sm font-medium">
+                        <span class="text-slate-700 dark:text-slate-300">Hasta 2.000€</span>
+                        <span class="text-brand-600 dark:text-brand-400">18 cuotas</span>
+                    </div>
+                </div>
+ 
+                <!-- Tarjeta 2: > 1 año -->
+                <div onclick="seleccionarPerfil('Más de 1 año', 4000, 48)" class="group p-5 border-2 border-slate-100 dark:border-slate-700 rounded-2xl cursor-pointer hover:border-brand-500 dark:hover:border-brand-500 hover:shadow-md transition-all active:scale-[0.98] bg-white dark:bg-slate-800 relative overflow-hidden">
+                    <div class="absolute right-0 top-0 h-full w-2 bg-brand-500 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="font-bold text-lg text-slate-800 dark:text-white">Más de 1 año</h3>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Personal indefinido ordinario</p>
+                        </div>
+                        <div class="bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 p-2 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-slate-100 dark:border-slate-700 flex justify-between text-sm font-medium">
+                        <span class="text-slate-700 dark:text-slate-300">Hasta 4.000€</span>
+                        <span class="text-brand-600 dark:text-brand-400">48 cuotas</span>
+                    </div>
+                </div>
+ 
+                <!-- Tarjeta 3: > 5 años -->
+                <div onclick="seleccionarPerfil('Más de 5 años', 8000, 60)" class="group p-5 border-2 border-slate-100 dark:border-slate-700 rounded-2xl cursor-pointer hover:border-brand-500 dark:hover:border-brand-500 hover:shadow-md transition-all active:scale-[0.98] bg-white dark:bg-slate-800 relative overflow-hidden">
+                    <div class="absolute right-0 top-0 h-full w-2 bg-brand-500 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="font-bold text-lg text-slate-800 dark:text-white">Más de 5 años</h3>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Personal indefinido ordinario</p>
+                        </div>
+                        <div class="bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 p-2 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-slate-100 dark:border-slate-700 flex justify-between text-sm font-medium">
+                        <span class="text-slate-700 dark:text-slate-300">Hasta 8.000€</span>
+                        <span class="text-brand-600 dark:text-brand-400">60 cuotas</span>
+                    </div>
+                </div>
+ 
+            </div>
+        </div>
+         
+        <!-- PASO 2: Calculadora Principal (Oculta por defecto) -->
+        <div id="step-2-calculator" class="hidden bg-white dark:bg-slate-800 rounded-3xl shadow-xl overflow-hidden border border-slate-100 dark:border-slate-700 transition-colors">
+            <!-- Cabecera -->
+            <div class="bg-brand-600 p-6 text-white text-center relative">
+                 
+                <!-- Botón Volver -->
+                <button onclick="volverSelector()" class="absolute top-4 left-4 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all active:scale-95 flex items-center gap-1 text-sm font-medium" aria-label="Volver">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                </button>
+ 
+                <!-- Botón Modo Claro/Oscuro -->
+                <button onclick="toggleTheme()" class="absolute top-4 right-4 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all active:scale-95" aria-label="Cambiar tema">
+                    <svg id="theme-icon-dark-2" class="w-5 h-5 block dark:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <svg id="theme-icon-light-2" class="w-5 h-5 hidden dark:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                </button>
+ 
+                <h1 class="text-2xl font-bold tracking-tight mt-1">Préstamo MD</h1>
+                 
+                <!-- Etiqueta del perfil seleccionado -->
+                <div class="mt-3 inline-block bg-white text-brand-700 px-4 py-1.5 rounded-full text-xs font-bold shadow-sm">
+                    Perfil: <span id="label-perfil">Seleccionado</span>
+                </div>
+                 
+                <div class="mt-3 inline-block bg-brand-700/50 px-3 py-1 rounded-full text-xs font-medium border border-brand-500/30">
+                    Año 2026 | TIN: 3,25% | TAE: 3,30%
+                </div>
+            </div>
+ 
+            <div class="p-6 space-y-6">
+                <!-- Formulario -->
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between items-end mb-1">
+                            <label for="capital" class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Cantidad del préstamo (€)</label>
+                            <span id="help-capital" class="text-xs font-medium text-brand-600 dark:text-brand-400">Max: -- €</span>
+                        </div>
+                        <div class="relative">
+                            <input type="number" id="capital" class="w-full pl-4 pr-10 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all text-lg font-medium outline-none dark:text-white" placeholder="Ej: 2000">
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-medium">€</span>
+                        </div>
+                    </div>
+ 
+                    <div>
+                        <div class="flex justify-between items-end mb-1">
+                            <label for="meses" class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Plazo (Meses)</label>
+                            <span id="help-meses" class="text-xs font-medium text-brand-600 dark:text-brand-400">Max: -- meses</span>
+                        </div>
+                        <div class="relative">
+                            <input type="number" id="meses" class="w-full pl-4 pr-16 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all text-lg font-medium outline-none dark:text-white" placeholder="Ej: 18">
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-medium">meses</span>
+                        </div>
+                    </div>
+ 
+                    <button id="btn-calcular" onclick="calcularPrestamo()" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-900 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-brand-500/30 transition-all transform active:scale-[0.98]">
+                        Calcular
+                    </button>
+                </div>
+ 
+                <!-- Resultados (Ocultos por defecto) -->
+                <div id="resultados" class="hidden mt-8 pt-6 border-t border-slate-100 dark:border-slate-700 space-y-4 transition-colors">
+                    <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 text-center mb-4">Resumen del Préstamo</h2>
+                     
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-600 text-center transition-colors">
+                            <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider mb-1">Total Intereses</p>
+                            <p id="res-intereses" class="text-xl font-bold text-rose-500 dark:text-rose-400">0,00 €</p>
+                        </div>
+                        <div class="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-600 text-center transition-colors">
+                            <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider mb-1">Total Pagado</p>
+                            <p id="res-total" class="text-xl font-bold text-brand-600 dark:text-brand-400">0,00 €</p>
+                        </div>
+                    </div>
+ 
+                    <button onclick="descargarPDF()" class="w-full mt-4 bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 dark:hover:bg-slate-600 active:bg-black text-white font-bold py-3.5 px-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 transform active:scale-[0.98]">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Descargar Cuadro (PDF)
+                    </button>
+ 
+                    <!-- Botón de Info -->
+                    <button onclick="toggleInfo()" class="w-full mt-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold py-3 px-4 rounded-xl transition-all flex items-center justify-center gap-2 transform active:scale-[0.98] border border-slate-200 dark:border-slate-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                        Info: Interés Legal y Cálculos
+                    </button>
+ 
+                    <!-- Panel Info -->
+                    <div id="info-panel" class="hidden mt-4 bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-inner text-sm space-y-3 transition-colors">
+                         
+                        <div class="mb-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+                            <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base mb-2 flex items-center gap-2">
+                                <svg class="w-4 h-4 text-brand-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                                Interés Legal del Dinero (2026)
+                            </h3>
+                            <p class="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
+                                El TIN aplicado del <strong class="text-slate-700 dark:text-slate-300">3,25%</strong> está ligado al <strong>Interés Legal del Dinero</strong> fijado para el año 2026. Este porcentaje es fijo durante este año, pero ten en cuenta que podría variar en el futuro si se actualiza mediante los Presupuestos Generales del Estado.
+                            </p>
+                        </div>
+ 
+                        <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base border-b border-slate-100 dark:border-slate-800 pb-2 mb-3">Fórmulas Aplicadas</h3>
+                        <div class="space-y-2 text-slate-600 dark:text-slate-400">
+                            <p><span class="font-semibold text-slate-700 dark:text-slate-300">Interés Mensual Fijo:</span> 0,0027075</p>
+                            <p class="pt-2"><span class="font-semibold text-slate-700 dark:text-slate-300">TIN (Tipo de Interés Nominal):</span><br>
+                            0,0027075 x 12 = 0,03249  →  <strong class="text-brand-600 dark:text-brand-400">3,25%</strong></p>
+                            <p class="pt-2"><span class="font-semibold text-slate-700 dark:text-slate-300">TAE (Tasa Anual Equivalente):</span><br>
+                            (1 + 0,0027075)^12 - 1 = 0,03298  →  <strong class="text-brand-600 dark:text-brand-400">3,30%</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+ 
+        <!-- INFO GLOBAL (Visible en todo momento) -->
+        <div class="mt-4">
+            <button onclick="toggleCondiciones()" class="w-full bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 p-4 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors active:scale-[0.98]">
+                <div class="flex items-center gap-3">
+                    <div class="bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 p-2 rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                    </div>
+                    <span class="font-semibold text-slate-700 dark:text-slate-200">Condiciones de Amortización</span>
+                </div>
+                <svg id="icon-chevron-condiciones" class="w-5 h-5 text-slate-400 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+ 
+            <div id="panel-condiciones" class="hidden mt-2 bg-white dark:bg-slate-900 p-5 rounded-2xl border border-amber-200 dark:border-amber-900/50 shadow-sm transition-all relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-1 h-full bg-amber-500"></div>
+                <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                    <strong class="text-slate-800 dark:text-slate-200 block mb-1">Amortización Anticipada</strong>
+                    No se permiten amortizaciones parciales del importe solicitado. Si la persona trabajadora quiere amortizar la totalidad del préstamo realizará una transferencia a la cuenta bancaria facilitada por RRHH a tales efectos, debiendo aportar copia del justificante bancario de la transferencia para poder cancelar el préstamo en la contabilidad.
+                </p>
+            </div>
+        </div>
+ 
+    </main>
+ 
+    <script>
+        // Variables globales para los límites según el perfil
+        let currentMaxCapital = 0;
+        let currentMaxMeses = 0;
+ 
+        // Constantes del préstamo
+        const TASA_MENSUAL = 0.0027075;
+        let cuadroAmortizacion = [];
+        let totales = { intereses: 0, pagado: 0 };
+ 
+        // Formateador de moneda formato España
+        const formatter = new Intl.NumberFormat('es-ES', {
+            style: 'currency',
+            currency: 'EUR',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+ 
+        // Formateador de números simple
+        const numFormatter = new Intl.NumberFormat('es-ES', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+ 
+        // --- LÓGICA DE NAVEGACIÓN Y PERFILES ---
+ 
+        function seleccionarPerfil(nombre, maxCapital, maxMeses) {
+            // Guardar límites
+            currentMaxCapital = maxCapital;
+            currentMaxMeses = maxMeses;
+ 
+            // Actualizar Interfaz (Textos de ayuda y placeholders)
+            document.getElementById('label-perfil').innerText = nombre;
+            document.getElementById('help-capital').innerText = `Max: ${formatter.format(maxCapital)}`;
+            document.getElementById('help-meses').innerText = `Max: ${maxMeses} meses`;
+             
+            // Establecer atributos max y defaults en los inputs
+            const inputCapital = document.getElementById('capital');
+            const inputMeses = document.getElementById('meses');
+             
+            inputCapital.max = maxCapital;
+            inputCapital.value = maxCapital; // Autocompletar con el máximo permitido
+             
+            inputMeses.max = maxMeses;
+            inputMeses.value = maxMeses; // Autocompletar con el máximo permitido
+ 
+            // Cambiar de vista
+            document.getElementById('step-1-selector').classList.add('hidden');
+            document.getElementById('step-2-calculator').classList.remove('hidden');
+        }
+ 
+        function volverSelector() {
+            // Ocultar resultados y limpiar datos por seguridad
+            document.getElementById('resultados').classList.add('hidden');
+            cuadroAmortizacion = [];
+             
+            // Cambiar de vista
+            document.getElementById('step-2-calculator').classList.add('hidden');
+            document.getElementById('step-1-selector').classList.remove('hidden');
+        }
+ 
+        // --- LÓGICA DE CÁLCULO ---
+ 
+        function calcularPrestamo() {
+            // Obtener valores
+            const capital = parseFloat(document.getElementById('capital').value);
+            const meses = parseInt(document.getElementById('meses').value);
+            const btn = document.getElementById('btn-calcular');
+ 
+            // 1. Validaciones básicas de campos vacíos o ceros
+            if (isNaN(capital) || capital <= 0 || isNaN(meses) || meses <= 0) {
+                mostrarErrorBoton(btn, "Datos inválidos");
+                return;
+            }
+ 
+            // 2. Validación estricta contra los límites del perfil seleccionado
+            if (capital > currentMaxCapital) {
+                mostrarErrorBoton(btn, `Excede límite: Max ${currentMaxCapital}€`);
+                return;
+            }
+            if (meses > currentMaxMeses) {
+                mostrarErrorBoton(btn, `Excede límite: Max ${currentMaxMeses} meses`);
+                return;
+            }
+ 
+            // Si pasa validaciones, restaurar botón por si acaso
+            btn.innerText = "Calcular";
+            btn.classList.replace('bg-rose-500', 'bg-brand-600');
+ 
+            // Reiniciar variables para el cálculo
+            cuadroAmortizacion = [];
+            let capitalPendiente = capital;
+            const cuotaCapitalMensual = capital / meses;
+            let totalInteresesAcumulado = 0;
+ 
+            // Bucle de cálculo mes a mes
+            for (let mes = 1; mes <= meses; mes++) {
+                // El interés se calcula sobre el capital pendiente del mes anterior
+                let interesMes = capitalPendiente * TASA_MENSUAL;
+                let cuotaTotalMes = cuotaCapitalMensual + interesMes;
+ 
+                // Guardar en el cuadro
+                cuadroAmortizacion.push({
+                    mes: mes,
+                    cuotaCapital: cuotaCapitalMensual,
+                    interes: interesMes,
+                    cuotaTotal: cuotaTotalMes,
+                    capitalPendienteAtras: capitalPendiente - cuotaCapitalMensual > 0 ? capitalPendiente - cuotaCapitalMensual : 0
+                });
+ 
+                // Acumular y restar
+                totalInteresesAcumulado += interesMes;
+                capitalPendiente -= cuotaCapitalMensual;
+            }
+ 
+            // Guardar totales
+            totales.intereses = totalInteresesAcumulado;
+            totales.pagado = capital + totalInteresesAcumulado;
+ 
+            // Actualizar Interfaz
+            document.getElementById('res-intereses').innerText = formatter.format(totales.intereses);
+            document.getElementById('res-total').innerText = formatter.format(totales.pagado);
+ 
+            // Mostrar resultados
+            document.getElementById('resultados').classList.remove('hidden');
+             
+            // Hacer scroll suave hacia los resultados en móviles
+            setTimeout(() => {
+                window.scrollTo({
+                    top: document.body.scrollHeight,
+                    behavior: 'smooth'
+                });
+            }, 100);
+        }
+ 
+        function mostrarErrorBoton(btn, mensaje) {
+            const textOriginal = "Calcular";
+            btn.innerText = mensaje;
+            btn.classList.replace('bg-brand-600', 'bg-rose-500');
+            setTimeout(() => {
+                btn.innerText = textOriginal;
+                btn.classList.replace('bg-rose-500', 'bg-brand-600');
+            }, 3000);
+        }
+ 
+        // --- LÓGICA DE PDF Y UI ---
+ 
+        function descargarPDF() {
+            if (cuadroAmortizacion.length === 0) return;
+ 
+            // Inicializar jsPDF
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+ 
+            const capitalInicial = parseFloat(document.getElementById('capital').value);
+            const meses = parseInt(document.getElementById('meses').value);
+            const perfilTexto = document.getElementById('label-perfil').innerText;
+ 
+            // Colores corporativos (coinciden con la web)
+            const colorPrimario = [22, 163, 74]; // brand-600
+             
+            // Título
+            doc.setFontSize(22);
+            doc.setTextColor(15, 23, 42); // slate-900
+            doc.text('Cuadro de Amortización', 14, 20);
+             
+            doc.setFontSize(11);
+            doc.setTextColor(100, 116, 139); // slate-500
+            doc.text(`Préstamo MD - Perfil: ${perfilTexto}`, 14, 28);
+ 
+            // Resumen arriba
+            doc.setFontSize(12);
+            doc.setTextColor(15, 23, 42);
+            doc.text(`Capital Prestado: ${formatter.format(capitalInicial)}`, 14, 40);
+            doc.text(`Plazo: ${meses} meses`, 14, 46);
+            doc.text(`Total Intereses: ${formatter.format(totales.intereses)}`, 110, 40);
+            doc.text(`Total a Pagar: ${formatter.format(totales.pagado)}`, 110, 46);
+ 
+            // Preparar datos para AutoTable
+            const bodyData = cuadroAmortizacion.map(fila => [
+                fila.mes.toString(),
+                // Usamos Math.floor(numero * 100) / 100 para forzar visualmente el corte a 2 decimales sin redondear al alza
+                numFormatter.format(Math.floor(fila.cuotaCapital * 100) / 100) + ' €',
+                numFormatter.format(fila.interes) + ' €',
+                numFormatter.format(fila.cuotaTotal) + ' €',
+                numFormatter.format(fila.capitalPendienteAtras) + ' €'
+            ]);
+ 
+            // Generar tabla
+            doc.autoTable({
+                startY: 55,
+                head: [['Mes', 'Cuota Capital', 'Interés', 'Cuota Total', 'Capital Pendiente']],
+                body: bodyData,
+                theme: 'striped',
+                headStyles: { fillColor: colorPrimario, textColor: 255 },
+                styles: { fontSize: 9, cellPadding: 3, halign: 'right' },
+                columnStyles: { 0: { halign: 'center', fontStyle: 'bold' } },
+                alternateRowStyles: { fillColor: [248, 250, 252] }, // slate-50
+                margin: { top: 15, right: 14, bottom: 40, left: 14 } // Margen inferior grande para los cálculos
+            });
+ 
+            // Añadir bloque de fórmulas TIN y TAE al final del documento
+            let finalY = doc.lastAutoTable.finalY + 15;
+             
+            // Si no hay espacio en esta página, crear una nueva
+            if (finalY > 240) {
+                doc.addPage();
+                finalY = 20;
+            }
+ 
+            // Caja de Fórmulas y Explicación
+            doc.setFillColor(241, 245, 249); // slate-100
+            doc.roundedRect(14, finalY, 182, 60, 3, 3, 'F');
+             
+            doc.setFontSize(11);
+            doc.setFont("helvetica", "bold");
+            doc.setTextColor(15, 23, 42);
+            doc.text('Interés Legal (Año 2026) y Cálculos', 20, finalY + 8);
+ 
+            doc.setFontSize(9);
+            doc.setFont("helvetica", "normal");
+            doc.setTextColor(71, 85, 105); // slate-600
+            doc.text('El TIN del 3,25% corresponde al Interés Legal del Dinero fijado para 2026. Este porcentaje es fijo', 20, finalY + 14);
+            doc.text('durante este año, pero podría variar en el futuro si se actualiza en los Presupuestos Generales.', 20, finalY + 19);
+ 
+            doc.setFontSize(10);
+             
+            // Explicación de dónde sale el TIN y el TAE según las fórmulas matemáticas
+            doc.text('• Interés Mensual Fijo: 0,0027075', 20, finalY + 28);
+             
+            doc.setFont("helvetica", "bold");
+            doc.text('• TIN (Tipo de Interés Nominal Anual):', 20, finalY + 36);
+            doc.setFont("helvetica", "normal");
+            doc.text('0,0027075 x 12 = 0,03249  ->  3,25%', 95, finalY + 36);
+             
+            doc.setFont("helvetica", "bold");
+            doc.text('• TAE (Tasa Anual Equivalente):', 20, finalY + 44);
+            doc.setFont("helvetica", "normal");
+            doc.text('(1 + 0,0027075)^12 - 1 = 0,03298  ->  3,30%', 95, finalY + 44);
+ 
+            doc.setFontSize(8);
+            doc.setTextColor(148, 163, 184); // slate-400
+            doc.text('Documento generado por la Calculadora de Préstamo MD.', 14, doc.internal.pageSize.getHeight() - 10);
+ 
+            // Descargar el archivo
+            doc.save(`Cuadro_Amortizacion_${capitalInicial}€_${meses}meses.pdf`);
+        }
+ 
+        // Lógica del modo Claro/Oscuro
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+        }
+ 
+        // Lógica para mostrar/ocultar el panel de información
+        function toggleInfo() {
+            const panel = document.getElementById('info-panel');
+            panel.classList.toggle('hidden');
+             
+            // Scroll suave hacia la info
+            if (!panel.classList.contains('hidden')) {
+                setTimeout(() => {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
+            }
+        }
+ 
+        function toggleCondiciones() {
+            const panel = document.getElementById('panel-condiciones');
+            const icon = document.getElementById('icon-chevron-condiciones');
+             
+            panel.classList.toggle('hidden');
+             
+            if (!panel.classList.contains('hidden')) {
+                icon.style.transform = 'rotate(180deg)';
+                setTimeout(() => {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
+            } else {
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+    </script>
+ 
+</body></html>
